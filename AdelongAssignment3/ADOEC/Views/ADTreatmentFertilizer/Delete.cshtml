@@ -1,0 +1,45 @@
+﻿@model a1OEC.Models.TreatmentFertilizer
+
+@{
+    ViewData["Title"] = "Delete " + ViewBag.Name + " Fertilizer";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>TreatmentFertilizer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RatePerAcre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RatePerAcre)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RateMetric)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RateMetric)
+        </dd>
+        @*<dt>
+            @Html.DisplayNameFor(model => model.FertilizerNameNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FertilizerNameNavigation.FertilizerName)
+        </dd>*@
+        <dt>
+            @Html.DisplayNameFor(model => model.Treatment)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Treatment.TreatmentId)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="TreatmentFertilizerId" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

@@ -1,0 +1,46 @@
+﻿@model a1OEC.Models.TreatmentFertilizer
+
+@{
+    ViewData["Title"] = "Create Fertilizer for " + ViewBag.Name + " Treatment";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h4>TreatmentFertilizer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @*<label asp-for="TreatmentId" class="control-label"></label>*@
+                <input type="hidden" asp-for="TreatmentId" class ="form-control" asp-items="ViewBag.TreatmentId"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="FertilizerName" class="control-label"></label>
+                <select asp-for="FertilizerName" class ="form-control" asp-items="ViewBag.FertilizerName"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="RatePerAcre" class="control-label"></label>
+                <input asp-for="RatePerAcre" class="form-control" />
+                <span asp-validation-for="RatePerAcre" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="RateMetric" class="control-label"></label>
+                <input asp-for="RateMetric" class="form-control" />
+                <span asp-validation-for="RateMetric" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
