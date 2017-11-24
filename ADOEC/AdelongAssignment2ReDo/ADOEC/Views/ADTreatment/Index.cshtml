@@ -1,0 +1,63 @@
+﻿@model IEnumerable<a1OEC.Models.Treatment>
+
+@{
+    ViewData["Title"] = "Treatments for Plots at " + ViewBag.FarmName + " Farm";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    <a asp-action="Create" asp-route-farmName="@ViewBag.FarmName" asp-route-plotId ="@ViewBag.PlotId">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Moisture)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Yield)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Weight)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Plot)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-controller="ADTreatmentFertilizer" asp-action="Index" asp-route-treatmentId="@item.TreatmentId" asp-route-name="@item.Name">@Html.DisplayFor(modelItem => item.Name)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Moisture)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Yield)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weight)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Plot.PlotId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TreatmentId" asp-route-farmName="@ViewBag.FarmName">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TreatmentId" asp-route-farmName="@ViewBag.FarmName">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TreatmentId" asp-route-farmName="@ViewBag.FarmName">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+    <!--at the end of the listing provide a link that passed plotId back to plot controller-->
+<div>
+    <a asp-controller="ADPlot" asp-action="Index" asp-route-plotId="@ViewBag.PlotId" asp-route-name="@ViewBag.Name">Back to Plot Listing</a>
+</div>
