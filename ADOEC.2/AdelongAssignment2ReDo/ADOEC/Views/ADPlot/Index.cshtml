@@ -1,0 +1,179 @@
+﻿@model IEnumerable<a1OEC.Models.Plot>
+
+@{
+    ViewData["Title"] = "Plot Listings for " + ViewBag.Name;
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    <a asp-action="Create" asp-route-cropId ="@ViewBag.CropId" asp-route-varId="@ViewBag.VarId" asp-route-name="@ViewBag.Name">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-controller="ADPlot" asp-route-sort="farmName" asp-route-cropId ="@ViewBag.CropId" asp-route-varId="@ViewBag.VarId" >Farm</a>
+            </th>
+            <th>
+                Crop
+            </th>
+            <th>
+               <a asp-action="Index" asp-controller="ADPlot" asp-route-sort="variety" asp-route-cropId ="@ViewBag.CropId" asp-route-varId="@ViewBag.VarId" >Variety</a> 
+            </th>
+            <th>
+                Date Planted
+            </th>
+            <th>
+                <a asp-action="Index" asp-controller="ADPlot" asp-route-sort="cec">Cec</a>
+            </th>
+            <th>
+                Treatment
+            </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.DateHarvested)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlantingRate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PlantingRateByPounds)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RowWidth)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PatternRepeats)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrganicMatter)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BicarbP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Potassium)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Magnesium)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Calcium)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PHsoil)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PHbuffer)
+                </th>*@
+
+                @*<th>
+                    @Html.DisplayNameFor(model => model.PercentBaseSaturationK)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PercentBaseSaturationMg)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PercentBaseSaturationCa)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PercentBaseSaturationH)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Comments)
+                </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Farm.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Variety.Crop.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Variety.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DatePlanted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cec)
+            </td>
+            <td>
+                @foreach (Treatment treatment in item.Treatment)
+                {
+                    @Html.DisplayFor(modelItem => treatment.Name)
+                    <br />
+                }
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.DateHarvested)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlantingRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlantingRateByPounds)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RowWidth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatternRepeats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrganicMatter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BicarbP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Potassium)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Magnesium)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Calcium)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PHsoil)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PHbuffer)
+            </td>*@
+
+            @*<td>
+                @Html.DisplayFor(modelItem => item.PercentBaseSaturationK)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PercentBaseSaturationMg)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PercentBaseSaturationCa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PercentBaseSaturationH)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comments)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Farm.ProvinceCode)
+            </td>
+            *@
+            <td>
+                <a asp-action="Edit" asp-route-cropId ="@ViewBag.CropId" asp-route-varId="@ViewBag.VarId" asp-route-name="@ViewBag.Name">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PlotId" asp-route-name="@ViewBag.Name">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PlotId" asp-route-cropId ="@ViewBag.CropId" asp-route-varId="@ViewBag.VarId" asp-route-name="@ViewBag.Name">Delete</a> |
+                <!---add a manage treatments hyperlink-->
+                <a asp-action="Index" asp-controller="ADTreatment" asp-route-plotId="@item.PlotId" asp-route-farmName="@item.Farm.Name" asp-route-name="@ViewBag.Name">Manage Treatments</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
