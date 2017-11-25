@@ -171,7 +171,7 @@
                 <a asp-action="Details" asp-route-id="@item.PlotId" asp-route-name="@ViewBag.Name">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.PlotId" asp-route-cropId ="@ViewBag.CropId" asp-route-varId="@ViewBag.VarId" asp-route-name="@ViewBag.Name">Delete</a> |
                 <!---add a manage treatments hyperlink-->
-                <a asp-action="Index" asp-controller="ADTreatment" asp-route-plotId="@item.PlotId" asp-route-farmName="@item.Farm.Name">Manage Treatments</a>
+                <a asp-action="Index" asp-controller="ADTreatment" asp-route-plotId="@item.PlotId" asp-route-farmName="@item.Farm.Name" asp-route-name="@ViewBag.Name">Manage Treatments</a>
             </td>
         </tr>
 }

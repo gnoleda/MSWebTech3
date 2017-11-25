@@ -34,6 +34,7 @@ namespace ADOEC.Controllers
             {
                 HttpContext.Session.SetString("searchCriteria", searchCriteria);
             }
+
             //have index action identify if cropid or varid, and persist to identifier
             if (plotId != null)
             {
@@ -67,7 +68,15 @@ namespace ADOEC.Controllers
                     //plotName = HttpContext.Session.GetString("varName");
 
                     ViewBag.PlotId = plotId;
-                    ViewBag.Name = plotName;
+                    //if you clicked the "back to plot listing" from the treatment page, keep the name already in viewbag, not the "plot name"
+                    if (plotId != null && name != null)
+                    {
+                        ViewBag.Name = name;
+                    }
+                    else
+                    {
+                        ViewBag.Name = plotName;
+                    }
 
                 }
 
@@ -115,7 +124,7 @@ namespace ADOEC.Controllers
                 return View(await plotsForVar.ToListAsync());
             }
             //look for passed plotId
-            else if (searchCriteria == "c" || cropId != null)
+            else if (searchCriteria == "c" && cropId != null)
             {
                 //use cropId to restrict the listing to plots with that id
                 var plotsForCrop = _context.Plot
@@ -154,6 +163,22 @@ namespace ADOEC.Controllers
                 }
 
                 return View(await plotsForCrop.ToListAsync());
+            }
+            //when hitting the back button, this keeps the name in the ViewBag
+            else if (searchCriteria == null && name != null)
+            {
+                var plotsForReturn = _context.Plot
+                    //.Where(p => p.PlotId == Convert.ToInt32(plotId))
+                    .Where (p => p.Variety.Crop.Name == name)
+                    .Include(p => p.Farm)
+                    .Include(p => p.Variety)
+                    .Include(p => p.Variety.Crop)
+                    .Include(p => p.Treatment)
+                    .OrderByDescending(p => p.DatePlanted);
+
+                ViewBag.Name = name;
+
+                return View(await plotsForReturn.ToListAsync());
             }
             else
             {

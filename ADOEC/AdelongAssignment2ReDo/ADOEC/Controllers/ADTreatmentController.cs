@@ -20,8 +20,11 @@ namespace ADOEC.Controllers
         }
 
         // GET: ADTreatment
-        public async Task<IActionResult> Index(string plotId, string farmName)
+        public async Task<IActionResult> Index(string plotId, string farmName, string name, string criteria)//name = name of crop
         {
+            //so when you go back to crop plot listing, you still have name in heading:
+            ViewBag.Name = name;
+
             //if plot Id is in URL/query string, save it to session
             if (plotId != null)
             {
@@ -49,7 +52,7 @@ namespace ADOEC.Controllers
 
                 //use plot id to filter list of treatments
                 var treatment = _context.Treatment
-                        .Where(t => t.TreatmentId == Convert.ToInt32(plotId))
+                        .Where(t => t.PlotId == Convert.ToInt32(plotId))
                         .Include(t => t.Plot)
                         .OrderBy(t => t.Name);
 
@@ -88,7 +91,7 @@ namespace ADOEC.Controllers
 
                     //use plot id to filter list of treatments
                     var treatment = _context.Treatment
-                                    .Where(t => t.TreatmentId == Convert.ToInt32(plotId))
+                                    .Where(t => t.PlotId == Convert.ToInt32(plotId))
                                     .Include(t => t.Plot)
                                     //extract fert names into a list, and sort aplhabetically
                                     .Include(t => t.TreatmentFertilizer)
@@ -97,22 +100,26 @@ namespace ADOEC.Controllers
                     //concatonate the sorted fert names, putting + between them
                     foreach (var item in treatment)
                     {
-                         string fertName = "";
-                        foreach (var name in item.TreatmentFertilizer)
+                        string fertName = "";
+                        int i = 0;
+                        int count = item.TreatmentFertilizer.Count();
+
+                        foreach (var names in item.TreatmentFertilizer)
                         {
-                            if (name.FertilizerName == null)
+                            if (i != count-1)
                             {
-                                break;
+                                fertName += names.FertilizerName + " + ";
                             }
                             else
                             {
-                                fertName += name.FertilizerName + " + ";
+                                fertName += names.FertilizerName;
                             }
+                            i++;
                         }
                         //if there are no treatmentfertilizer records for this treatment, put "no fertilizer" in the name
-                        if (fertName == null)
+                        if (fertName == "")
                         {
-                            fertName = "no fertilizer";
+                            item.Name = "no fertilizer";
                         }
                         else
                         {
@@ -128,15 +135,24 @@ namespace ADOEC.Controllers
 
                 else
                 {//if not in session variable either...display a message
-                    TempData["message"] = "Please select a plot to see it's treatments.";
-                    return RedirectToAction("Index", "ADPlot");
+                    //if you are coming from treatment error message, criteria would be treatment
+                    if(criteria != null)
+                    {
+                        var oECContext = _context.Treatment.Include(t => t.Plot);
+                        return View(await oECContext.ToListAsync());
+                    }
+                    else
+                    {
+                        TempData["message"] = "Please select a plot to see it's treatments.";
+                        return RedirectToAction("Index", "ADPlot");
+                    }
                 }
             }
             //do the same thing for farm name
             else if (farmName != null)
             {
                 var treatment = _context.Treatment
-                .Where(t => t.TreatmentId == Convert.ToInt32(plotId))
+                .Where(t => t.PlotId == Convert.ToInt32(plotId))
                 .Include(t => t.Plot)
                 .OrderBy(t => t.Name);
 

@@ -32,7 +32,7 @@ namespace ADOEC.Controllers
 
                 //filter treatmentFertilizer using treatment id to show only fertilizers on that file.
                 var treatmentFert1 = _context.TreatmentFertilizer
-                                .Where(t => t.TreatmentFertilizerId == Convert.ToInt32(treatmentId))
+                                .Where(t => t.TreatmentId == Convert.ToInt32(treatmentId))
                                 .Include(t => t.FertilizerNameNavigation)
                                 .Include(t => t.Treatment)
                                 .OrderBy(t => t.FertilizerName);
@@ -52,7 +52,7 @@ namespace ADOEC.Controllers
 
                     //filter treatmentFertilizer using treatment id to show only fertilizers on that file.
                     var treatmentFert2 = _context.TreatmentFertilizer
-                                        .Where(t => t.TreatmentFertilizerId == Convert.ToInt32(treatmentId))
+                                        .Where(t => t.TreatmentId == Convert.ToInt32(treatmentId))
                                         .Include(t => t.FertilizerNameNavigation)
                                         .Include(t => t.Treatment)
                                         .OrderBy(t => t.FertilizerName);
@@ -66,7 +66,8 @@ namespace ADOEC.Controllers
                 else
                 {
                     TempData["message"] = "Please select a treatment to see it's fertilizer composition";
-                    return RedirectToAction("Index", "ADTreatment");
+                    //@criteria is passing treatment as criteria
+                    return RedirectToAction("Index", "ADTreatment", new { @criteria = "treatment" });
                 }
             }
 
@@ -84,7 +85,7 @@ namespace ADOEC.Controllers
             var treatmentFertilizer = await _context.TreatmentFertilizer
                 .Include(t => t.FertilizerNameNavigation)
                 .Include(t => t.Treatment)
-                .SingleOrDefaultAsync(m => m.TreatmentFertilizerId == id);
+                .SingleOrDefaultAsync(m => m.TreatmentId == id);
             if (treatmentFertilizer == null)
             {
                 return NotFound();
